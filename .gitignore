@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# html
+/react-pizza-html-master
+
 # testing
 /coverage
 
