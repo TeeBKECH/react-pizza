@@ -1,12 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+/html_master
 /node_modules
 /.pnp
 .pnp.js
-
-# html
-/react-pizza-html-master
 
 # testing
 /coverage
