@@ -1,9 +1,9 @@
-import Categories from './components/Categories/Categories'
-import Header from './components/Header/Header'
-import Pizzaitem from './components/PizzaItem/Pizzaitem'
-import Sort from './components/Sort/Sort'
+import Categories from '../Categories/Categories'
+import Header from '../Header/Header'
+import Pizzaitem from '../PizzaItem/Pizzaitem'
+import Sort from '../Sort/Sort'
 
-import './scss/app.scss'
+import '../../scss/app.scss'
 
 const App = () => {
   return (
