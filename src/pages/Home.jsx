@@ -19,13 +19,13 @@ const Home = () => {
   }, [])
 
   return (
-    <>
+    <div className='container'>
       <div className='content__top'>
         <Categories />
         <Sort />
       </div>
       <h2 className='content__title'>Все пиццы</h2>
-      <div className='content__items'>
+      <div className='content__items content__items--pizzas'>
         {isLoading
           ? [...new Array(6)].map((_, i) => <Skeleton key={i} />)
           : pizzas.map((el, i) => {
@@ -37,7 +37,7 @@ const Home = () => {
               )
             })}
       </div>
-    </>
+    </div>
   )
 }
 
