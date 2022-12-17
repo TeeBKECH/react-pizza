@@ -1,9 +1,8 @@
-import Categories from '../Categories/Categories'
-import Header from '../Header/Header'
-import Pizzaitem from '../PizzaItem/Pizzaitem'
-import Sort from '../Sort/Sort'
+import { Outlet } from 'react-router-dom'
 
-import '../../scss/app.scss'
+import Header from '../Header/Header'
+
+import '../../assets/scss/app.scss'
 
 const App = () => {
   return (
@@ -12,21 +11,7 @@ const App = () => {
 
       <div className='content'>
         <div className='container'>
-          <div className='content__top'>
-            <Categories />
-            <Sort />
-          </div>
-          <h2 className='content__title'>Все пиццы</h2>
-          <div className='content__items'>
-            <Pizzaitem
-              title='Мексиканская пицца'
-              price={500}
-            />
-            <Pizzaitem
-              title='Чизбургер-пицца'
-              price={350}
-            />
-          </div>
+          <Outlet />
         </div>
       </div>
     </div>
