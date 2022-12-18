@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
+import { useContext, useEffect, useState } from 'react'
+
+import { SearchContext } from '../components/App/App'
 
 import Categories from '../components/Categories/Categories'
 import Pagination from '../components/Pagination/Pagination'
@@ -8,6 +9,7 @@ import Skeleton from '../components/PizzaItem/Skeleton'
 import Sort from '../components/Sort/Sort'
 
 const Home = () => {
+  const { searchValue } = useContext(SearchContext)
   const [pizzas, setpizzas] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [activeCat, setActiveCat] = useState(0)
@@ -16,7 +18,6 @@ const Home = () => {
     name: 'Популярности ▼',
     property: 'rating',
   })
-  const [searchValue] = useOutletContext()
 
   useEffect(() => {
     const category = activeCat > 0 ? `&category=${activeCat}` : ''
