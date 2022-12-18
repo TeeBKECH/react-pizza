@@ -1,13 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-const Categories = () => {
-  const [activeCat, setActiveCat] = useState(0)
-
+const Categories = ({ activeCat, onClickCategory }) => {
   const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
-
-  const onClick = (index) => {
-    setActiveCat(index)
-  }
 
   return (
     <div className='categories'>
@@ -16,7 +10,7 @@ const Categories = () => {
           return (
             <li
               key={i}
-              onClick={() => onClick(i)}
+              onClick={() => onClickCategory(i)}
               className={activeCat === i ? 'active' : ''}
             >
               {el}
