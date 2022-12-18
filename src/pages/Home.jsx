@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
+import { useOutletContext } from 'react-router-dom'
 
 import Categories from '../components/Categories/Categories'
+import Pagination from '../components/Pagination/Pagination'
 import Pizzaitem from '../components/PizzaItem/Pizzaitem'
 import Skeleton from '../components/PizzaItem/Skeleton'
 import Sort from '../components/Sort/Sort'
@@ -9,24 +11,29 @@ const Home = () => {
   const [pizzas, setpizzas] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [activeCat, setActiveCat] = useState(0)
+  const [curPage, setCurPage] = useState(1)
   const [sortProperty, setSortProperty] = useState({
     name: 'Популярности ▼',
     property: 'rating',
   })
+  const [searchValue] = useOutletContext()
 
   useEffect(() => {
-    const catFilter = activeCat > 0 ? `&category=${activeCat}` : ''
-    const sortFilter = sortProperty.property.includes('-') ? 'asc' : 'desc'
-    const sortBy = `sortBy=${sortProperty.property.replace('-', '')}&order=${sortFilter}`
+    const category = activeCat > 0 ? `&category=${activeCat}` : ''
+    const order = sortProperty.property.includes('-') ? 'asc' : 'desc'
+    const sortBy = `&sortBy=${sortProperty.property.replace('-', '')}&order=${order}`
+    const search = `&search=${searchValue.toLowerCase()}`
 
     setIsLoading(true)
-    fetch(`https://639d1a8c16d1763ab1593307.mockapi.io/items?${sortBy}${catFilter}`)
+    fetch(
+      `https://639d1a8c16d1763ab1593307.mockapi.io/items?page=${curPage}&limit=4${sortBy}${category}${search}`,
+    )
       .then((res) => res.json())
       .then((json) => {
         setpizzas(json)
         setIsLoading(false)
       })
-  }, [activeCat, sortProperty])
+  }, [activeCat, sortProperty, curPage, searchValue])
 
   return (
     <div className='container'>
@@ -53,6 +60,7 @@ const Home = () => {
               )
             })}
       </div>
+      <Pagination onChangePage={(num) => setCurPage(num)} />
     </div>
   )
 }
