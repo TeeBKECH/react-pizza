@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import { SearchContext } from '../components/App/App'
 
@@ -9,44 +10,35 @@ import Skeleton from '../components/PizzaItem/Skeleton'
 import Sort from '../components/Sort/Sort'
 
 const Home = () => {
+  const { catId, sortBy } = useSelector((store) => store.filter)
+
   const { searchValue } = useContext(SearchContext)
   const [pizzas, setpizzas] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [activeCat, setActiveCat] = useState(0)
   const [curPage, setCurPage] = useState(1)
-  const [sortProperty, setSortProperty] = useState({
-    name: 'Популярности ▼',
-    property: 'rating',
-  })
 
   useEffect(() => {
-    const category = activeCat > 0 ? `&category=${activeCat}` : ''
-    const order = sortProperty.property.includes('-') ? 'asc' : 'desc'
-    const sortBy = `&sortBy=${sortProperty.property.replace('-', '')}&order=${order}`
+    const category = catId > 0 ? `&category=${catId}` : ''
+    const order = sortBy.property.includes('-') ? 'asc' : 'desc'
+    const sort = `&sortBy=${sortBy.property.replace('-', '')}&order=${order}`
     const search = `&search=${searchValue.toLowerCase()}`
 
     setIsLoading(true)
     fetch(
-      `https://639d1a8c16d1763ab1593307.mockapi.io/items?page=${curPage}&limit=4${sortBy}${category}${search}`,
+      `https://639d1a8c16d1763ab1593307.mockapi.io/items?page=${curPage}&limit=4${sort}${category}${search}`,
     )
       .then((res) => res.json())
       .then((json) => {
         setpizzas(json)
         setIsLoading(false)
       })
-  }, [activeCat, sortProperty, curPage, searchValue])
+  }, [catId, sortBy, curPage, searchValue])
 
   return (
     <div className='container'>
       <div className='content__top'>
-        <Categories
-          activeCat={activeCat}
-          onClickCategory={(i) => setActiveCat(i)}
-        />
-        <Sort
-          sortProperty={sortProperty}
-          onClickSortItem={(obj) => setSortProperty(obj)}
-        />
+        <Categories />
+        <Sort />
       </div>
       <h2 className='content__title'>Все пиццы</h2>
       <div className='content__items content__items--pizzas'>
