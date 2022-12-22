@@ -1,7 +1,6 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-
-import { SearchContext } from '../components/App/App'
+import axios from 'axios'
 
 import Categories from '../components/Categories/Categories'
 import Pagination from '../components/Pagination/Pagination'
@@ -10,9 +9,8 @@ import Skeleton from '../components/PizzaItem/Skeleton'
 import Sort from '../components/Sort/Sort'
 
 const Home = () => {
-  const { catId, sortBy } = useSelector((store) => store.filter)
+  const { catId, sortBy, search } = useSelector((store) => store.filter)
 
-  const { searchValue } = useContext(SearchContext)
   const [pizzas, setpizzas] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [curPage, setCurPage] = useState(1)
@@ -21,18 +19,18 @@ const Home = () => {
     const category = catId > 0 ? `&category=${catId}` : ''
     const order = sortBy.property.includes('-') ? 'asc' : 'desc'
     const sort = `&sortBy=${sortBy.property.replace('-', '')}&order=${order}`
-    const search = `&search=${searchValue.toLowerCase()}`
+    const searchValue = `&search=${search.toLowerCase()}`
 
     setIsLoading(true)
-    fetch(
-      `https://639d1a8c16d1763ab1593307.mockapi.io/items?page=${curPage}&limit=4${sort}${category}${search}`,
-    )
-      .then((res) => res.json())
-      .then((json) => {
-        setpizzas(json)
+    axios
+      .get(
+        `https://639d1a8c16d1763ab1593307.mockapi.io/items?page=${curPage}&limit=4${sort}${category}${searchValue}`,
+      )
+      .then((response) => {
+        setpizzas(response.data)
         setIsLoading(false)
       })
-  }, [catId, sortBy, curPage, searchValue])
+  }, [catId, sortBy, curPage, search])
 
   return (
     <div className='container'>
