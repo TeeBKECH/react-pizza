@@ -3,38 +3,38 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { setSortBy } from '../../store/slices/filterSlice'
 
+export const sortItems = [
+  {
+    name: 'Популярности ▼',
+    property: 'rating',
+  },
+  {
+    name: 'Популярности ▲',
+    property: '-rating',
+  },
+  {
+    name: 'Цене ▼',
+    property: 'price',
+  },
+  {
+    name: 'Цене ▲',
+    property: '-price',
+  },
+  {
+    name: 'Алфавиту (А-Я)',
+    property: '-title',
+  },
+  {
+    name: 'Алфавиту (Я-А)',
+    property: 'title',
+  },
+]
+
 const Sort = () => {
   const [showSortList, setShowSortList] = useState(false)
 
   const dispatch = useDispatch()
   const { sortBy } = useSelector((store) => store.filter)
-
-  const sortItems = [
-    {
-      name: 'Популярности ▼',
-      property: 'rating',
-    },
-    {
-      name: 'Популярности ▲',
-      property: '-rating',
-    },
-    {
-      name: 'Цене ▼',
-      property: 'price',
-    },
-    {
-      name: 'Цене ▲',
-      property: '-price',
-    },
-    {
-      name: 'Алфавиту (А-Я)',
-      property: '-title',
-    },
-    {
-      name: 'Алфавиту (Я-А)',
-      property: 'title',
-    },
-  ]
 
   const onClick = (obj) => {
     dispatch(setSortBy(obj))

@@ -1,16 +1,23 @@
 import React from 'react'
 import ReactPaginate from 'react-paginate'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { setCurrentPage } from '../../store/slices/filterSlice'
 
 import styles from './Pagination.module.scss'
 
-const Pagination = ({ onChangePage }) => {
+const Pagination = () => {
+  const dispatch = useDispatch()
+  const { curPage } = useSelector((store) => store.filter)
+
   return (
     <ReactPaginate
       className={styles.pagination}
       breakLabel='...'
       nextLabel='>'
-      onPageChange={(e) => onChangePage(e.selected + 1)}
+      onPageChange={(e) => dispatch(setCurrentPage(e.selected + 1))}
       pageRangeDisplayed={4}
+      forcePage={curPage - 1}
       pageCount={3}
       previousLabel='<'
       renderOnZeroPageCount={null}
