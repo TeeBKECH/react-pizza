@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { setSortBy } from '../../store/slices/filterSlice'
@@ -36,13 +36,30 @@ const Sort = () => {
   const dispatch = useDispatch()
   const { sortBy } = useSelector((store) => store.filter)
 
+  const sortRef = useRef()
+
   const onClick = (obj) => {
     dispatch(setSortBy(obj))
     setShowSortList(false)
   }
 
+  useEffect(() => {
+    const eventHandler = (event) => {
+      if (!event.composedPath().includes(sortRef.current)) {
+        setShowSortList(false)
+      }
+    }
+    document.body.addEventListener('click', eventHandler)
+    return () => {
+      document.body.removeEventListener('click', eventHandler)
+    }
+  }, [])
+
   return (
-    <div className='sort'>
+    <div
+      ref={sortRef}
+      className='sort'
+    >
       <div className='sort__label'>
         <b>Сортировка по:</b>
         <span onClick={() => setShowSortList((prev) => !prev)}>{sortBy.name}</span>
