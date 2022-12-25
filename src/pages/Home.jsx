@@ -58,6 +58,7 @@ const Home = () => {
   }, [catId, sortBy.property, curPage, searchValue])
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     if (isMounted.current) {
       const queryParams = qs.stringify({
         catId,
