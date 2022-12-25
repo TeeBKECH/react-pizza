@@ -11,6 +11,10 @@ const Cart = () => {
   const dispatch = useDispatch()
   const { cartItems, totalPrice } = useSelector((store) => store.cart)
 
+  const cartCount = cartItems.reduce((sum, acc) => {
+    return acc.count + sum
+  }, 0)
+
   const onClickClear = () => {
     dispatch(clearItems())
   }
@@ -110,7 +114,7 @@ const Cart = () => {
         <div className='cart__bottom'>
           <div className='cart__bottom-details'>
             <span>
-              Всего пицц: <b>{cartItems.length} шт.</b>
+              Всего пицц: <b>{cartCount} шт.</b>
             </span>
             <span>
               Сумма заказа: <b>{totalPrice} ₽</b>
