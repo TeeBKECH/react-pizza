@@ -1,15 +1,15 @@
-import React from 'react'
+import React, {FC} from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import logoSvg from '../../assets/img/pizza-logo.svg'
 
-import Search from '../Search/Search'
+import Search from '../Search'
 
-const Header = () => {
-  const { totalPrice, cartItems } = useSelector((store) => store.cart)
+const Header: FC = () => {
+  const { totalPrice, cartItems } = useSelector((store: any) => store.cart)
 
-  const cartCount = cartItems.reduce((sum, acc) => {
+  const cartCount = cartItems.reduce((sum: number, acc: any) => {
     return acc.count + sum
   }, 0)
   return (

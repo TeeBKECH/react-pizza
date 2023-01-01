@@ -77,6 +77,11 @@ body {
       margin: 0;
     }
   }
+
+  &--pizza-page {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .cart {

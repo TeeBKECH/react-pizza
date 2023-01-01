@@ -1,14 +1,14 @@
-import React from 'react'
+import React, {FC} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCategory } from '../../store/slices/filterSlice'
 
-const Categories = () => {
+const Categories: FC = () => {
   const dispatch = useDispatch()
-  const { catId } = useSelector((store) => store.filter)
+  const { catId } = useSelector((store: any) => store.filter)
 
   const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
 
-  const onClickCategory = (id) => {
+  const onClickCategory = (id: number) => {
     dispatch(setCategory(id))
   }
 

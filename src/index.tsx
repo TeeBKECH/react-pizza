@@ -4,13 +4,12 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { store } from './store/store'
 import { Provider } from 'react-redux'
 
-import App from './components/App/App'
+import App from './components/App'
 
 import Home from './pages/Home'
 import Cart from './pages/Cart'
-import ErrorPage from './pages/ErrorPage/ErrorPage'
-
-import './index.scss'
+import ErrorPage from './pages/ErrorPage'
+import PizzaPage from './pages/PizzaPage'
 
 const router = createBrowserRouter([
   {
@@ -26,13 +25,21 @@ const router = createBrowserRouter([
         path: 'cart/',
         element: <Cart />,
       },
+      {
+        path: 'pizza/:id',
+        element: <PizzaPage />,
+      },
     ],
   },
 ])
 
-const root = ReactDOM.createRoot(document.getElementById('root'))
-root.render(
-  <Provider store={store}>
-    <RouterProvider router={router} />
-  </Provider>,
-)
+const rootElement = document.getElementById('root')
+
+if (rootElement) {
+  const root = ReactDOM.createRoot(rootElement)
+  rootElement && root.render(
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>,
+  )
+}

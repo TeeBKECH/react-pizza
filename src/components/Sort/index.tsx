@@ -1,9 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { setSortBy } from '../../store/slices/filterSlice'
 
-export const sortItems = [
+type SortItem = {
+  name: string;
+  property: string;
+}
+
+export const sortItems: SortItem[] = [
   {
     name: 'Популярности ▼',
     property: 'rating',
@@ -30,21 +35,21 @@ export const sortItems = [
   },
 ]
 
-const Sort = () => {
+const Sort: FC = () => {
   const [showSortList, setShowSortList] = useState(false)
 
   const dispatch = useDispatch()
-  const { sortBy } = useSelector((store) => store.filter)
+  const { sortBy } = useSelector((store: any) => store.filter)
 
-  const sortRef = useRef()
+  const sortRef = useRef<HTMLDivElement>(null)
 
-  const onClick = (obj) => {
+  const onClick = (obj: SortItem) => {
     dispatch(setSortBy(obj))
     setShowSortList(false)
   }
 
   useEffect(() => {
-    const eventHandler = (event) => {
+    const eventHandler = (event: any) => {
       if (!event.composedPath().includes(sortRef.current)) {
         setShowSortList(false)
       }

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, FC } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import qs from 'qs'
@@ -6,18 +6,18 @@ import qs from 'qs'
 import { setFiltersFromUrl } from '../store/slices/filterSlice'
 import { fetchPizzas } from '../store/slices/pizzaSlice'
 
-import Categories from '../components/Categories/Categories'
-import Pagination from '../components/Pagination/Pagination'
-import Pizzaitem from '../components/PizzaItem/Pizzaitem'
+import Categories from '../components/Categories'
+import Pagination from '../components/Pagination'
+import Pizzaitem from '../components/PizzaItem'
 import Skeleton from '../components/PizzaItem/Skeleton'
-import Sort, { sortItems } from '../components/Sort/Sort'
+import Sort, { sortItems } from '../components/Sort'
 
-const Home = () => {
+const Home: FC = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { catId, sortBy, searchValue, curPage } = useSelector((store) => store.filter)
-  const { items, status } = useSelector((store) => store.pizza)
+  const { catId, sortBy, searchValue, curPage } = useSelector((store: any) => store.filter)
+  const { items, status } = useSelector((store: any) => store.pizza)
 
   const isSearchParams = useRef(false)
   const isMounted = useRef(false)
@@ -29,6 +29,7 @@ const Home = () => {
     const search = searchValue ? `&search=${searchValue.toLowerCase()}` : ''
     const url = `https://639d1a8c16d1763ab1593307.mockapi.io/items?page=${curPage}&limit=4${sort}${order}${category}${search}`
 
+    // @ts-ignore
     dispatch(fetchPizzas(url))
 
     window.scrollTo(0, 0)
@@ -74,7 +75,7 @@ const Home = () => {
         {status === 'loading' && [...new Array(6)].map((_, i) => <Skeleton key={i} />)}
         {status === 'error' && <h2>Ошибка загрузки пицц</h2>}
         {status === 'done' &&
-          items.map((el, i) => {
+          items.map((el: any, i: number) => {
             return (
               <Pizzaitem
                 key={el.id}

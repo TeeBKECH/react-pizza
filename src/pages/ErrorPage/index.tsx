@@ -1,12 +1,12 @@
-import React from 'react'
+import React, {FC} from 'react'
 import { useRouteError } from 'react-router-dom'
 
-import Header from '../../components/Header/Header'
+import Header from '../../components/Header'
 
 import styles from './ErrorPage.module.scss'
 
-const ErrorPage = () => {
-  const error = useRouteError()
+const ErrorPage: FC = () => {
+  const error: any = useRouteError()
   console.error(error)
 
   return (
