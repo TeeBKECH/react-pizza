@@ -12,7 +12,7 @@ const Categories: FC = () => {
   const onClickCategory = (id: number) => {
     dispatch(setCategory(id))
   }
-
+  
   return (
     <div className='categories'>
       <ul>
