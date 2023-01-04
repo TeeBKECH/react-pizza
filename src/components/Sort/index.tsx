@@ -1,18 +1,14 @@
 import React, { useEffect, useRef, useState, FC } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-import { setSortBy } from '../../store/slices/filterSlice'
-
-type SortItem = {
-  name: string;
-  property: string;
-}
+import { ISortBy, setSortBy } from '../../store/slices/filterSlice'
+import { RootState, useAppDispatch } from '../../store/store';
 
 type PopupType = MouseEvent & {
   path: Node[]
 }
 
-export const sortItems: SortItem[] = [
+export const sortItems: ISortBy[] = [
   {
     name: 'Популярности ▼',
     property: 'rating',
@@ -42,12 +38,12 @@ export const sortItems: SortItem[] = [
 const Sort: FC = () => {
   const [showSortList, setShowSortList] = useState(false)
 
-  const dispatch = useDispatch()
-  const { sortBy } = useSelector((store: any) => store.filter)
+  const dispatch = useAppDispatch()
+  const { sortBy } = useSelector((store: RootState) => store.filter)
 
   const sortRef = useRef<HTMLDivElement>(null)
 
-  const onClick = (obj: SortItem) => {
+  const onClick = (obj: ISortBy) => {
     dispatch(setSortBy(obj))
     setShowSortList(false)
   }

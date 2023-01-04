@@ -1,6 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-const initialState = {
+export interface ICartItem {
+  id: string; 
+  title: string;
+  price: number; 
+  type: string;
+  size: number;
+  imageUrl: string;
+  count: number;
+}
+
+interface ICartState {
+  totalPrice: number;
+  cartItems: ICartItem[]
+}
+
+const initialState: ICartState = {
   totalPrice: 0,
   cartItems: [],
 }
@@ -9,7 +24,7 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addCartItem: (state, action) => {
+    addCartItem: (state, action: PayloadAction<ICartItem>) => {
       const item = state.cartItems.find((el) => el.id === action.payload.id)
 
       if (item) {
@@ -24,7 +39,7 @@ const cartSlice = createSlice({
         return obj.price * obj.count + sum
       }, 0)
     },
-    incrementItem: (state, action) => {
+    incrementItem: (state, action: PayloadAction<string>) => {
       const findItem = state.cartItems.find((el) => el.id === action.payload)
 
       if (findItem) {
@@ -34,21 +49,21 @@ const cartSlice = createSlice({
         return obj.price * obj.count + sum
       }, 0)
     },
-    decrementItem: (state, action) => {
+    decrementItem: (state, action: PayloadAction<string>) => {
       const findItem = state.cartItems.find((el) => el.id === action.payload)
 
       if (findItem) {
         findItem.count--
       }
 
-      if (findItem.count === 0) {
+      if (findItem && findItem.count === 0) {
         state.cartItems = state.cartItems.filter((el) => el.id !== action.payload)
       }
       state.totalPrice = state.cartItems.reduce((sum, obj) => {
         return obj.price * obj.count + sum
       }, 0)
     },
-    removeCartItem: (state, action) => {
+    removeCartItem: (state, action: PayloadAction<string>) => {
       state.cartItems = state.cartItems.filter((item) => item.id !== action.payload)
       state.totalPrice = state.cartItems.reduce((sum, obj) => {
         return obj.price * obj.count + sum

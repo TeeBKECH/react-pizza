@@ -1,28 +1,21 @@
 import React, { useState, FC } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { addCartItem } from '../../store/slices/cartSlice'
+import { addCartItem, ICartItem } from '../../store/slices/cartSlice'
+import { IPizzaItem } from '../../store/slices/pizzaSlice'
+import { RootState, useAppDispatch } from '../../store/store'
 
 export const typeNames = ['Тонкое', 'Традиционное']
 
-export type PizzaItemProps = {
-  id: number; 
-  title: string; 
-  price: number;
-  types: number[];
-  sizes: number[];
-  imageUrl: string;
-}
-
-const Pizzaitem: FC<PizzaItemProps> = ({ id, title, price, imageUrl, types, sizes }) => {
-  const dispatch = useDispatch()
-  const { cartItems } = useSelector((store: any) => store.cart)
+const Pizzaitem: FC<IPizzaItem> = ({ id, title, price, imageUrl, types, sizes }) => {
+  const dispatch = useAppDispatch()
+  const { cartItems } = useSelector((store: RootState) => store.cart)
 
   const [activeType, setActiveType] = useState(0)
   const [activeSize, setActiveSize] = useState(0)
 
-  const itemCount = cartItems.find((el: any) => el.id === id) || 0
+  const itemCount: ICartItem | boolean = cartItems.find((el: ICartItem) => el.id === id) || false
 
   const onClickAddItem = () => {
     dispatch(
@@ -33,6 +26,7 @@ const Pizzaitem: FC<PizzaItemProps> = ({ id, title, price, imageUrl, types, size
         imageUrl,
         type: typeNames[activeType],
         size: sizes[activeSize],
+        count: 1
       }),
     )
   }
@@ -104,7 +98,7 @@ const Pizzaitem: FC<PizzaItemProps> = ({ id, title, price, imageUrl, types, size
           </svg>
           &nbsp;
           <span>Добавить</span>
-          {itemCount.count > 0 && <i>{itemCount.count}</i>}
+          {itemCount && itemCount.count > 0 && <i>{itemCount.count}</i>}
         </div>
       </div>
     </div>

@@ -1,10 +1,11 @@
 import { useEffect, useRef, FC } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import qs from 'qs'
 
 import { setFiltersFromUrl } from '../store/slices/filterSlice'
 import { fetchPizzas } from '../store/slices/pizzaSlice'
+import { RootState, useAppDispatch } from '../store/store'
 
 import Categories from '../components/Categories'
 import Pagination from '../components/Pagination'
@@ -13,11 +14,11 @@ import Skeleton from '../components/PizzaItem/Skeleton'
 import Sort, { sortItems } from '../components/Sort'
 
 const Home: FC = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const { catId, sortBy, searchValue, curPage } = useSelector((store: any) => store.filter)
-  const { items, status } = useSelector((store: any) => store.pizza)
+  const { catId, sortBy, searchValue, curPage } = useSelector((store: RootState) => store.filter)
+  const { items, status } = useSelector((store: RootState) => store.pizza)
 
   const isSearchParams = useRef(false)
   const isMounted = useRef(false)
@@ -29,7 +30,6 @@ const Home: FC = () => {
     const search = searchValue ? `&search=${searchValue.toLowerCase()}` : ''
     const url = `https://639d1a8c16d1763ab1593307.mockapi.io/items?page=${curPage}&limit=4${sort}${order}${category}${search}`
 
-    // @ts-ignore
     dispatch(fetchPizzas(url))
 
     window.scrollTo(0, 0)
@@ -38,9 +38,13 @@ const Home: FC = () => {
   useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1))
-      const sortBy = sortItems.find((el) => el.property === params.property)
+      const sorting = sortItems.find((el) => el.property === params.property) || sortItems[0]
 
-      dispatch(setFiltersFromUrl({ ...params, sortBy }))
+      dispatch(setFiltersFromUrl({
+        catId: Number(params.catId),
+        curPage: Number(params.curPage),
+        sortBy: sorting
+      }))
       isSearchParams.current = true
     }
   }, [dispatch])
@@ -75,7 +79,7 @@ const Home: FC = () => {
         {status === 'loading' && [...new Array(6)].map((_, i) => <Skeleton key={i} />)}
         {status === 'error' && <h2>Ошибка загрузки пицц</h2>}
         {status === 'done' &&
-          items.map((el: any, i: number) => {
+          items.map((el, i) => {
             return (
               <Pizzaitem
                 key={el.id}

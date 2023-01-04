@@ -2,14 +2,17 @@ import React, {FC} from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import logoSvg from '../../assets/img/pizza-logo.svg'
+import { RootState } from '../../store/store'
 
 import Search from '../Search'
 
-const Header: FC = () => {
-  const { totalPrice, cartItems } = useSelector((store: any) => store.cart)
+import logoSvg from '../../assets/img/pizza-logo.svg'
 
-  const cartCount = cartItems.reduce((sum: number, acc: any) => {
+
+const Header: FC = () => {
+  const { totalPrice, cartItems } = useSelector((store: RootState) => store.cart)
+
+  const cartCount = cartItems.reduce((sum, acc) => {
     return acc.count + sum
   }, 0)
   return (
