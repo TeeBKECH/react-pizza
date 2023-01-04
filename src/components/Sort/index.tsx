@@ -8,6 +8,10 @@ type SortItem = {
   property: string;
 }
 
+type PopupType = MouseEvent & {
+  path: Node[]
+}
+
 export const sortItems: SortItem[] = [
   {
     name: 'Популярности ▼',
@@ -49,8 +53,9 @@ const Sort: FC = () => {
   }
 
   useEffect(() => {
-    const eventHandler = (event: any) => {
-      if (!event.composedPath().includes(sortRef.current)) {
+    const eventHandler = (event: MouseEvent) => {
+      const e = event as PopupType
+      if (sortRef.current && !e.path.includes(sortRef.current)) {
         setShowSortList(false)
       }
     }
