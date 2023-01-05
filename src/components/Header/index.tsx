@@ -1,7 +1,9 @@
-import {FC} from 'react'
+import {FC, useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import { useLocalStorage } from '../../hooks/useLocalStorage'
+import { calcTotalPrice } from '../../utils/calcTotalPrice'
 import { RootState } from '../../store/store'
 
 import Search from '../Search'
@@ -11,6 +13,13 @@ import logoSvg from '../../assets/img/pizza-logo.svg'
 
 const Header: FC = () => {
   const { totalPrice, cartItems } = useSelector((store: RootState) => store.cart)
+  const [cart, setCart] = useLocalStorage('cart', cartItems)
+  const [price, setPrice] = useLocalStorage('price', cartItems)
+
+  useEffect(() => {
+    setPrice(calcTotalPrice(cartItems))
+    setCart(cartItems)
+  }, [cartItems])
 
   const cartCount = cartItems.reduce((sum, acc) => {
     return acc.count + sum

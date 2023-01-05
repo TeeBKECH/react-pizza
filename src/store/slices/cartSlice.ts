@@ -1,23 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { getStorageValue } from '../../hooks/useLocalStorage'
 
 export interface ICartItem {
-  id: string; 
-  title: string;
-  price: number; 
-  type: string;
-  size: number;
-  imageUrl: string;
-  count: number;
+  id: string
+  title: string
+  price: number
+  type: string
+  size: number
+  imageUrl: string
+  count: number
 }
 
 interface ICartState {
-  totalPrice: number;
+  totalPrice: number
   cartItems: ICartItem[]
 }
 
 const initialState: ICartState = {
-  totalPrice: 0,
-  cartItems: [],
+  totalPrice: getStorageValue('price', 0),
+  cartItems: getStorageValue('cart', []),
 }
 
 const cartSlice = createSlice({
